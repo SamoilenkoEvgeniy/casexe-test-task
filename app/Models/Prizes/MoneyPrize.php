@@ -10,8 +10,8 @@ class MoneyPrize implements IPrizeShouldConverted, IPrizeInterval
 {
     use IntervalTrait;
 
-    protected $convertTo;
-    protected $coefficient;
+    public $convertTo;
+    public $coefficient;
 
     public function __construct()
     {

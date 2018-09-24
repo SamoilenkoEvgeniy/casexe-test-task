@@ -19,3 +19,9 @@ php artisan queue:work
 ```$bash
 php artisan prizes:sent
 ```
+
+### How to run tests
+* from container run
+```$bash
+./vendor/bin/phpunit
+```

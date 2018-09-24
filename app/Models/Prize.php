@@ -21,6 +21,7 @@ class Prize extends Model
         'accepted', 'declined'
     ];
 
+    public static $isProcessableStatus = 'accepted';
 
     /**
      * @param $status
@@ -52,6 +53,47 @@ class Prize extends Model
             'value' => $prize->getPrize(),
             'status' => 'started'
         ]);
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function getInstance()
+    {
+        $class = new \ReflectionClass($this->namespace);
+        $class = $class->newInstance();
+        return $class;
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function convert()
+    {
+        $class = $this->getInstance();
+        if ($class->isConvertible() && $this->status === self::$isProcessableStatus ) {
+            $class->convert($this);
+        }
+    }
+
+    /**
+     * @throws \ReflectionException
+     */
+    public function send()
+    {
+        $user = $this->user;
+        $class = $this->getInstance();
+        if ($this->status === self::$isProcessableStatus ) {
+            $class->toSent($this, $user);
+        }
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function toArray()

@@ -13738,6 +13738,12 @@ $(window).ready(function () {
         return false;
     });
 
+    $(document).on('click', '#prizes_table .exchange', function (event) {
+        event.preventDefault();
+        prizesTable.exchange($(this));
+        return false;
+    });
+
     prizesTable.drawTable();
 });
 
@@ -35982,6 +35988,7 @@ var PrizesTable = function () {
 
         this.table = $("#prizes_table");
         this.startedStatus = 'started';
+        this.acceptedStatus = 'accepted';
     }
 
     _createClass(PrizesTable, [{
@@ -35999,8 +36006,11 @@ var PrizesTable = function () {
                         row.append($('<td/>').append(item.value));
                         row.append($('<td/>').append(item.status));
                         if (item.status === _this.startedStatus) {
-                            row.append($('<td/>').append($("<button/>", { class: 'accept' }).append('Принять')));
-                            row.append($('<td/>').append($("<button/>", { class: 'decline' }).append('Отказаться')));
+                            row.append($('<td/>').append($("<button/>", { class: 'accept' }).append('Принять')).append($("<button/>", { class: 'decline' }).append('Отказаться')));
+                        } else if (item.status === _this.acceptedStatus && item.type === 'MoneyPrize') {
+                            row.append($('<td/>').append($("<button/>", { class: 'exchange' }).append('Обменять на баллы')));
+                        } else {
+                            row.append($('<td/>').append($("<span/>")));
                         }
                         _this.table.find('tbody').append(row);
                     });
@@ -36022,6 +36032,24 @@ var PrizesTable = function () {
                 },
                 success: function success() {
                     _this2.drawTable();
+                },
+                complete: function complete() {
+                    element.removeAttr('disabled');
+                }
+            });
+        }
+    }, {
+        key: 'exchange',
+        value: function exchange(element) {
+            var _this3 = this;
+
+            element.attr('disabled', 'disabled');
+            var prizeId = element.parents('tr').attr('prizeId');
+            $.ajax({
+                url: 'prizes/exchange',
+                data: { prizeId: prizeId },
+                success: function success() {
+                    _this3.drawTable();
                 },
                 complete: function complete() {
                     element.removeAttr('disabled');

@@ -35,4 +35,17 @@ class PrizeController extends Controller
         return $this->response();
     }
 
+    /**
+     * @todo make request validation
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function exchange(Request $request)
+    {
+        $prize = Prize::findOrFail($request->input('prizeId'));
+        $prize->convert();
+        return $this->response();
+    }
+
+
 }

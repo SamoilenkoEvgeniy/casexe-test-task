@@ -37,6 +37,12 @@ $(window).ready(function() {
         return false;
     });
 
+    $(document).on('click', '#prizes_table .exchange', function(event) {
+        event.preventDefault();
+        prizesTable.exchange($(this));
+        return false;
+    });
+
     prizesTable.drawTable();
 
 });

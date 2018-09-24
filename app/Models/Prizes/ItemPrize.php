@@ -3,15 +3,26 @@
 namespace App\Models\Prizes;
 
 use App\Models\Prizes\Traits\ItemsTrait;
-use App\Modules\Prizes\Interfaces\IPrice;
+use App\Modules\Prizes\Interfaces\IPrizeItem;
 
-class ItemPrize implements IPrice
+class ItemPrize implements IPrizeItem
 {
     use ItemsTrait;
 
     public function __construct()
     {
         $this->getItems();
+    }
+
+    public function isConvertible()
+    {
+        return false;
+    }
+
+    public function toSent($object, $user)
+    {
+        $object->status = 'sent';
+        $object->save();
     }
 
     /**

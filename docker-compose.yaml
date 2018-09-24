@@ -22,9 +22,11 @@
             environment:
                 - "DB_PORT=3306"
                 - "DB_HOST=mysql"
+                - "REDIS_PORT=6379"
             volumes:
                 - ./:/var/www
             links:
+                - redis
                 - mysql
         mysql:
             container_name: mysql-container
@@ -34,3 +36,9 @@
                 - "MYSQL_DATABASE=prizes"
             ports:
                 - "3306:3306"
+        redis:
+            image: redis:latest
+            ports:
+                - "6379:6379"
+            environment:
+                - REDIS_PORT=6379

@@ -3,6 +3,7 @@ export class PrizesTable {
     constructor() {
         this.table = $("#prizes_table");
         this.startedStatus = 'started';
+        this.acceptedStatus = 'accepted';
     }
 
     drawTable() {
@@ -16,8 +17,11 @@ export class PrizesTable {
                     row.append($('<td/>').append(item.value));
                     row.append($('<td/>').append(item.status));
                     if (item.status === this.startedStatus) {
-                        row.append($('<td/>').append($("<button/>", {class: 'accept'}).append('Принять')));
-                        row.append($('<td/>').append($("<button/>", {class: 'decline'}).append('Отказаться')));
+                        row.append($('<td/>').append($("<button/>", {class: 'accept'}).append('Принять')).append($("<button/>", {class: 'decline'}).append('Отказаться')));
+                    } else if (item.status === this.acceptedStatus && item.type === 'MoneyPrize') {
+                        row.append($('<td/>').append($("<button/>", {class: 'exchange'}).append('Обменять на баллы')));
+                    } else {
+                        row.append($('<td/>').append($("<span/>")));
                     }
                     this.table.find('tbody').append(row);
                 });
@@ -34,6 +38,21 @@ export class PrizesTable {
                 prizeId: prizeId,
                 status: status
             },
+            success: () => {
+                this.drawTable()
+            },
+            complete: () => {
+                element.removeAttr('disabled');
+            }
+        })
+    }
+
+    exchange(element) {
+        element.attr('disabled', 'disabled');
+        const prizeId = element.parents('tr').attr('prizeId');
+        $.ajax({
+            url: 'prizes/exchange',
+            data: {prizeId: prizeId},
             success: () => {
                 this.drawTable()
             },

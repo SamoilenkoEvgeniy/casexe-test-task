@@ -20,19 +20,21 @@ progress-bar() {
 
 docker stop mysql-container;
 docker stop nginx-container;
+docker stop redis_queue;
 docker stop app-container;
 docker rm mysql-container;
 docker rm nginx-container;
+docker rm redis_queue;
 docker rm app-container;
 docker-compose down;
 
 docker-compose up -d --build
-
+#
 # wait before container to respond
 echo -e "\033[32mwaiting container"
 progress-bar 2
-
-docker exec -t app-container sh  -c 'composer update'
+#
+docker exec -t app-container sh  -c 'composer update --no-scripts'
 docker exec -t app-container sh  -c 'php artisan key:generate;'
 docker exec -t app-container sh  -c 'php artisan ide:generate;'
 docker exec -t app-container sh  -c 'php artisan migrate;'

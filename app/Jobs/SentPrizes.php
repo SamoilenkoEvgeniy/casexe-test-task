@@ -33,7 +33,6 @@ class SentPrizes implements ShouldQueue
      */
     public function handle()
     {
-        sleep(5);
         $this->prize->send();
     }
 }

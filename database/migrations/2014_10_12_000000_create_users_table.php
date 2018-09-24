@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -21,6 +22,13 @@ class CreateUsersTable extends Migration
             $table->integer('scores');
             $table->timestamps();
         });
+
+        User::create([
+            'name' => 'demo',
+            'email' => 'demo@demo.com',
+            'password' => \Hash::make('demo'),
+            'scores' => 0
+        ]);
     }
 
     /**

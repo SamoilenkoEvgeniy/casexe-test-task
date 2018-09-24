@@ -1,22 +1,42 @@
-
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
-
 require('./bootstrap');
 
-window.Vue = require('vue');
+import {PrizesTable} from "./prizes-table";
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+$(window).ready(function() {
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+    const prizesTable = new PrizesTable();
 
-const app = new Vue({
-    el: '#app'
+    $(document).on('click', '#getRandomPrize', function(event) {
+        event.preventDefault();
+        const that = $(this);
+
+        that.attr('disabled', 'disabled');
+
+        $.ajax({
+            url: '/prize/random',
+            success: () => {
+                prizesTable.drawTable();
+            },
+            complete: () => {
+                that.removeAttr('disabled');
+            }
+        });
+
+        return false;
+    });
+
+    $(document).on('click', '#prizes_table .accept', function(event) {
+        event.preventDefault();
+        prizesTable.changePrizeStatus($(this), 'accepted');
+        return false;
+    });
+
+    $(document).on('click', '#prizes_table .decline', function(event) {
+        event.preventDefault();
+        prizesTable.changePrizeStatus($(this), 'declined');
+        return false;
+    });
+
+    prizesTable.drawTable();
+
 });

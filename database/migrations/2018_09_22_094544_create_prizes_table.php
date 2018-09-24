@@ -15,7 +15,11 @@ class CreatePrizesTable extends Migration
     {
         Schema::create('prizes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('prize');
+            $table->string('namespace');
+            $table->string('value');
+            $table->integer('user_id', false, true);
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('status');
             $table->timestamps();
         });
     }

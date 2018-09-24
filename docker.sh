@@ -32,7 +32,7 @@ docker-compose up -d --build
 echo -e "\033[32mwaiting container"
 progress-bar 2
 
-#docker exec -t app-container sh  -c 'composer update'
+docker exec -t app-container sh  -c 'composer update'
 docker exec -t app-container sh  -c 'php artisan key:generate;'
 docker exec -t app-container sh  -c 'php artisan ide:generate;'
 docker exec -t app-container sh  -c 'php artisan migrate;'

@@ -20,11 +20,11 @@ progress-bar() {
 
 docker stop mysql-container;
 docker stop nginx-container;
-docker stop redis_queue;
+docker stop redis-container;
 docker stop app-container;
 docker rm mysql-container;
 docker rm nginx-container;
-docker rm redis_queue;
+docker rm redis-container;
 docker rm app-container;
 docker-compose down;
 

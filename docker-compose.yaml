@@ -25,7 +25,7 @@
             volumes:
                 - ./:/var/www
             links:
-                - redis:redis_queue
+                - redis:redis-container
                 - mysql
         mysql:
             container_name: mysql-container
@@ -37,6 +37,6 @@
                 - "3306:3306"
         redis:
             image: redis:latest
-            container_name: redis_queue
+            container_name: redis-container
             ports:
                 - "6379:6379"
